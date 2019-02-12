@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: cq-oc-ex1-go-server
+spec:
+  selector:
+    app: cq-oc-ex1-go-server
+  ports:
+  - protocol: TCP
+    port: 64912
+    targetPort: 64912

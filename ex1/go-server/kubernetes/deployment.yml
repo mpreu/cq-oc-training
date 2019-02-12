@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cq-oc-ex1-go-server
+  labels:
+    app: cq-oc-ex1-go-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cq-oc-ex1-go-server
+  template:
+    metadata:
+      labels:
+        app: cq-oc-ex1-go-server
+    spec:
+      containers:
+      - name: cq-oc-ex1-go-server
+        image: cq-oc-ex1-go-server:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 64912

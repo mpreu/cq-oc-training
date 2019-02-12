@@ -1,0 +1,4 @@
+#!/bin/bash
+IMAGE_NAME=cq-oc-ex1-go-server
+PORT=64912
+docker run --rm -p 127.0.0.1:$PORT:$PORT $IMAGE_NAME
