@@ -1,0 +1,7 @@
+NAMESPACE=cq-oc-tutorial
+APP_NAME=ex1-go-server
+SOURCE_REPOSITORY_URL=https://github.com/mpreu/cq-oc-training.git
+SOURCE_REPOSITORY_REF=master
+SOURCE_REPOSITORY_CONTEXT_DIR=ex1/go-server
+APP_VERSION=latest
+APP_PORT=64912

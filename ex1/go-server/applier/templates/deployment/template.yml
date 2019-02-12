@@ -1,0 +1,70 @@
+---
+kind: Template
+apiVersion: v1
+metadata:
+  name: deploymentconfig-template
+  annotations:
+    openshift.io/display-name: ${APP_NAME} Build Base Image Template
+    description: Template to be used to create the Base Image for ${APP_NAME}
+    iconClass: icon-jenkins
+    tags: ${APP_NAME}
+objects:
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: ${APP_NAME}
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      name: ${APP_NAME}
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          name: ${APP_NAME}
+      spec:
+        containers:
+          - env:
+            image: "${APP_NAME}:${APP_VERSION}"
+            imagePullPolicy: IfNotPresent
+            name: ${APP_NAME}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+      - imageChangeParams:
+          containerNames:
+            - ${APP_NAME}
+          from:
+            kind: ImageStreamTag
+            name: '${APP_NAME}:${APP_VERSION}'
+            namespace: ${NAMESPACE}
+        type: ImageChange
+parameters:
+- name: NAMESPACE
+  displayName: Namespace name where Application Template be deployed
+  description: Namespace name where Application Template will be deployed
+  required: true
+- name: APP_NAME
+  displayName: Name
+  description: The name assigned to all objects and the resulting imagestream.
+  required: true
+- name: APP_VERSION
+  displayName: App Version Number
+  description: The App Version to be use to Tag de container Image
+  required: true

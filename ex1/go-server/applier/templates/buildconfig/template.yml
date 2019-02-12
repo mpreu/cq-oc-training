@@ -1,0 +1,65 @@
+---
+apiVersion: v1
+kind: Template
+labels:
+  template: buildconfig-template
+metadata:
+  annotations:
+    description: |-
+      BuildConfig Template
+  creationTimestamp: null
+objects:
+- kind: ImageStream
+  apiVersion: v1
+  metadata:
+    name: ${APP_NAME}
+    annotations:
+      description: Keeps track of changes in the application image
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    name: ${APP_NAME}
+    labels:
+      build: ${APP_NAME}
+      type: image
+  spec:
+    runPolicy: Serial
+    source:
+      type: Git
+      git:
+        uri: "${SOURCE_REPOSITORY_URL}"
+        ref: "${SOURCE_REPOSITORY_REF}"
+      contextDir: "${SOURCE_REPOSITORY_CONTEXT_DIR}"
+    strategy:
+      dockerStrategy:
+        dockerfilePath: "${DOCKERFILE}"
+      type: Docker
+    output:
+      to:
+        kind: ImageStreamTag
+        name: "${APP_NAME}:${APP_VERSION}"
+parameters:
+- name: APP_NAME
+  displayName: Name
+  description: The name assigned to all objects and the resulting imagestream.
+  required: true
+- name: APP_VERSION
+  displayName: App Version Number
+  description: The App Version to be use to Tag de container Image
+  required: true
+- name: DOCKERFILE
+  displayName: Dockerfile
+  description: The dockerfile to be used.
+  value: Dockerfile
+  required: true
+- name: SOURCE_REPOSITORY_URL
+  displayName: Git Repository URL
+  description: The URL of the repository with your application source code.
+  required: true
+- name: SOURCE_REPOSITORY_REF
+  displayName: Git Reference
+  description: Set this to a branch name, tag or other ref of your repository if you are not using the default (master) branch.
+  required: true
+- name: SOURCE_REPOSITORY_CONTEXT_DIR
+  displayName: Source Context Dir
+  description: The directory in the source repository where the dockerfile is.

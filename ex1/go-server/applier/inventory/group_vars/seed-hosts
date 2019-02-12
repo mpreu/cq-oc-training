@@ -1,0 +1,33 @@
+---
+openshift_cluster_content:
+- object: projectrequest
+  content:
+  - name: "projectrequest"
+    template: "{{ inventory_dir }}/../templates/projectrequest/template.yml"
+    action: create
+    params: "{{ inventory_dir }}/../params/projects"
+    tags:
+    - projects
+- object: app-template
+  content:
+    - name: "buildconfig"
+      namespace: "cq-oc-tutorial"
+      template: "{{ inventory_dir }}/../templates/buildconfig/template.yml"
+      params: "{{ inventory_dir }}/../params/app"
+      tags:
+        - app
+        - buildconfig
+    - name: "deployment"
+      namespace: "cq-oc-tutorial"
+      template: "{{ inventory_dir }}/../templates/deployment/template.yml"
+      params: "{{ inventory_dir }}/../params/app"
+      tags:
+        - app
+        - deployment
+    - name: "service"
+      namespace: "cq-oc-tutorial"
+      template: "{{ inventory_dir }}/../templates/service/template.yml"
+      params: "{{ inventory_dir }}/../params/app"
+      tags:
+        - app
+        - service
