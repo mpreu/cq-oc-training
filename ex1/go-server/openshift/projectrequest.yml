@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: ProjectRequest
+metadata:
+  name: cq-oc-tutorial
+description: 'cq-oc-tutorial' 
+displayName: 'cq-oc-tutorial'

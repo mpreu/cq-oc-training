@@ -1,0 +1,31 @@
+---
+kind: ImageStream
+apiVersion: v1
+metadata:
+  name: ex1-go-server
+  annotations:
+    description: Keeps track of changes in the application image
+---
+kind: BuildConfig
+apiVersion: v1
+metadata:
+  name: ex1-go-server
+  labels:
+    build: ex1-go-server
+    type: image
+spec:
+  runPolicy: Serial
+  source:
+    type: Git
+    git:
+      uri: "https://github.com/mpreu/cq-oc-training"
+      ref: "master"
+    contextDir: "ex1/go-server"
+  strategy:
+    dockerStrategy:
+      dockerfilePath: "Dockerfile"
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: "ex1-go-server:latest"
